@@ -3,334 +3,292 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Under Maintenance</title>
+    <title>Situs Sedang Dipelihara | Under Maintenance</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
     <style>
-        /* CSS Variables untuk Mempermudah Kustomisasi Warna */
+        /* CSS Variables untuk Mempermudah Kustomisasi */
         :root {
-            --bg-color: #0a0b10;
-            --text-color: #ffffff;
-            --text-muted: #8a8f98;
-            --primary-glow: #00f0ff; /* Neon Biru */
-            --secondary-glow: #ff007f; /* Neon Pink */
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --card-border: rgba(255, 255, 255, 0.08);
+            --primary: #00f0ff; /* Neon Cyan */
+            --secondary: #ff007f; /* Neon Pink */
+            --bg-dark: #0a0a16;
+            --cube-size: 150px;
+            --cube-translate: 75px; /* Setengah dari cube-size */
+        }
+
+        /* Responsivitas Ukuran Kubus 3D */
+        @media (max-width: 768px) {
+            :root {
+                --cube-size: 110px;
+                --cube-translate: 55px;
+            }
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background-color: var(--bg-dark);
+            background-image: 
+                linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            overflow-x: hidden;
             perspective: 1000px;
-            padding: 20px;
         }
 
-        /* Dekorasi Cahaya Latar Belakang (Ambient Glow) */
-        .bg-light {
+        /* Latar Belakang Cahaya (Nebula/Orb Effect) */
+        .glow-orb {
             position: absolute;
-            width: 300px;
-            height: 300px;
             border-radius: 50%;
-            filter: blur(150px);
+            filter: blur(100px);
+            opacity: 0.4;
             z-index: 1;
             pointer-events: none;
         }
-        .light-1 {
-            background: rgba(0, 240, 255, 0.15);
+
+        .orb-cyan {
+            width: 300px;
+            height: 300px;
+            background: var(--primary);
             top: 20%;
-            left: 20%;
-        }
-        .light-2 {
-            background: rgba(255, 0, 127, 0.15);
-            bottom: 20%;
-            right: 20%;
+            left: 10%;
+            animation: floatOrb 12s infinite alternate ease-in-out;
         }
 
-        /* Container Utama dengan Efek Glassmorphism */
+        .orb-pink {
+            width: 350px;
+            height: 350px;
+            background: var(--secondary);
+            bottom: 15%;
+            right: 10%;
+            animation: floatOrb 15s infinite alternate ease-in-out -3s;
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(40px, -50px) scale(1.1); }
+        }
+
+        /* Container Utama */
         .container {
             position: relative;
-            z-index: 2;
-            max-width: 550px;
-            width: 100%;
+            z-index: 10;
             text-align: center;
-            background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--card-border);
-            border-radius: 24px;
-            padding: 40px 30px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            padding: 2rem;
+            max-width: 650px;
+            width: 100%;
         }
 
-        /* Area Animasi 3D */
-        .scene-3d {
-            width: 200px;
-            height: 200px;
-            margin: 0 auto 30px auto;
+        /* Arena Animasi 3D */
+        .scene {
+            width: var(--cube-size);
+            height: var(--cube-size);
+            margin: 0 auto 3.5rem auto;
+            perspective: 800px;
+        }
+
+        .cube {
+            width: 100%;
+            height: 100%;
             position: relative;
-            perspective: 1000px;
+            transform-style: preserve-3d;
+            animation: rotateCube 15s infinite linear;
+        }
+
+        /* Desain Sisi Kubus */
+        .face {
+            position: absolute;
+            width: var(--cube-size);
+            height: var(--cube-size);
+            background: rgba(10, 25, 47, 0.6);
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3), inset 0 0 15px rgba(0, 240, 255, 0.2);
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            font-size: calc(var(--cube-size) * 0.35);
+            backdrop-filter: blur(5px);
+            border-radius: 8px;
+            transition: border-color 0.5s, box-shadow 0.5s;
         }
 
-        /* Kubus Luar */
-        .cube-outer {
-            width: 120px;
-            height: 120px;
-            position: absolute;
-            transform-style: preserve-3d;
-            animation: rotateOuter 14s linear infinite;
-        }
+        /* Posisi 3D Masing-Masing Sisi */
+        .front  { transform: rotateY(  0deg) translateZ(var(--cube-translate)); }
+        .back   { transform: rotateY(180deg) translateZ(var(--cube-translate)); border-color: var(--secondary); box-shadow: 0 0 15px rgba(255, 0, 127, 0.3); }
+        .right  { transform: rotateY( 90deg) translateZ(var(--cube-translate)); }
+        .left   { transform: rotateY(-90deg) translateZ(var(--cube-translate)); border-color: var(--secondary); box-shadow: 0 0 15px rgba(255, 0, 127, 0.3); }
+        .top    { transform: rotateX( 90deg) translateZ(var(--cube-translate)); }
+        .bottom { transform: rotateX(-90deg) translateZ(var(--cube-translate)); }
 
-        .cube-outer .face {
-            position: absolute;
-            width: 120px;
-            height: 120px;
-            background: rgba(0, 240, 255, 0.03);
-            border: 2px solid var(--primary-glow);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
-        }
-
-        /* Kubus Dalam */
-        .cube-inner {
-            width: 60px;
-            height: 60px;
-            position: absolute;
-            transform-style: preserve-3d;
-            animation: rotateInner 8s linear infinite;
-        }
-
-        .cube-inner .face-inner {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 0, 127, 0.05);
-            border: 1.5px solid var(--secondary-glow);
-            box-shadow: 0 0 10px rgba(255, 0, 127, 0.3);
-        }
-
-        /* Posisi Sisi Kubus Luar (3D Transform) */
-        .cube-outer .front  { transform: translateZ(60px); }
-        .cube-outer .back   { transform: rotateY(180deg) translateZ(60px); }
-        .cube-outer .right  { transform: rotateY(90deg) translateZ(60px); }
-        .cube-outer .left   { transform: rotateY(-90deg) translateZ(60px); }
-        .cube-outer .top    { transform: rotateX(90deg) translateZ(60px); }
-        .cube-outer .bottom { transform: rotateX(-90deg) translateZ(60px); }
-
-        /* Posisi Sisi Kubus Dalam (3D Transform) */
-        .cube-inner .front  { transform: translateZ(30px); }
-        .cube-inner .back   { transform: rotateY(180deg) translateZ(30px); }
-        .cube-inner .right  { transform: rotateY(90deg) translateZ(30px); }
-        .cube-inner .left   { transform: rotateY(-90deg) translateZ(30px); }
-        .cube-inner .top    { transform: rotateX(90deg) translateZ(30px); }
-        .cube-inner .bottom { transform: rotateX(-90deg) translateZ(30px); }
-
-        /* Animasi Rotasi */
-        @keyframes rotateOuter {
+        @keyframes rotateCube {
             0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
             100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
         }
 
-        @keyframes rotateInner {
-            0% { transform: rotateX(360deg) rotateY(0deg) rotateZ(360deg); }
-            100% { transform: rotateX(0deg) rotateY(-360deg) rotateZ(0deg); }
-        }
-
-        /* Status Badge */
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 6px 16px;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--primary-glow);
-            margin-bottom: 24px;
-            border: 1px solid rgba(0, 240, 255, 0.2);
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--primary-glow);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--primary-glow);
-            animation: pulse 1.5s infinite ease-in-out;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.4; transform: scale(0.9); }
-            50% { opacity: 1; transform: scale(1.2); }
-        }
-
-        /* Teks Judul & Deskripsi */
+        /* Bagian Teks */
         h1 {
+            font-family: 'Orbitron', sans-serif;
             font-size: 2.2rem;
-            font-weight: 700;
+            font-weight: 900;
             letter-spacing: 2px;
-            margin-bottom: 12px;
-            background: linear-gradient(45deg, var(--text-color), #a5b4fc);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, #ffffff, var(--primary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
         }
 
         p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
+            font-size: 1rem;
+            color: #a0aec0;
             line-height: 1.6;
-            margin-bottom: 30px;
+            margin-bottom: 2rem;
+            font-weight: 300;
         }
 
-        /* Progress Bar Pemeliharaan */
+        /* Loading Bar & Progress */
         .progress-container {
-            width: 100%;
             background: rgba(255, 255, 255, 0.05);
-            height: 6px;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 15px;
+            border-radius: 20px;
+            height: 10px;
+            width: 80%;
+            margin: 0 auto 1.5rem auto;
             position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .progress-bar {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
             height: 100%;
-            width: 65%; /* Anda bisa menyesuaikan angka progres di sini */
-            background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow));
-            box-shadow: 0 0 10px var(--primary-glow);
-            border-radius: 10px;
-            animation: shimmer 2s infinite linear;
-            background-size: 200% 100%;
+            width: 0%;
+            border-radius: 20px;
+            box-shadow: 0 0 10px var(--primary);
+            animation: fillProgress 10s infinite linear;
         }
 
-        @keyframes shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
+        @keyframes fillProgress {
+            0% { width: 0%; }
+            80% { width: 90%; }
+            100% { width: 100%; }
         }
 
-        .progress-label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            color: var(--text-muted);
+        /* Log Status Konsol */
+        .status-box {
+            background: rgba(5, 5, 15, 0.8);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: var(--primary);
+            max-width: 400px;
+            margin: 0 auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
         }
 
-        /* Penyesuaian Responsif untuk Perangkat Seluler (Mobile) */
-        @media (max-width: 600px) {
-            .container {
-                padding: 30px 20px;
-            }
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 1.5s infinite;
+        }
 
-            .scene-3d {
-                width: 150px;
-                height: 150px;
-                margin-bottom: 20px;
-            }
+        @keyframes pulse {
+            0% { opacity: 0.3; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 0.3; transform: scale(0.9); }
+        }
 
-            /* Mengecilkan Kubus di Layar Kecil agar Tidak Melebihi Batas */
-            .cube-outer {
-                width: 90px;
-                height: 90px;
-            }
-            .cube-outer .face {
-                width: 90px;
-                height: 90px;
-            }
-            .cube-outer .front  { transform: translateZ(45px); }
-            .cube-outer .back   { transform: rotateY(180deg) translateZ(45px); }
-            .cube-outer .right  { transform: rotateY(90deg) translateZ(45px); }
-            .cube-outer .left   { transform: rotateY(-90deg) translateZ(45px); }
-            .cube-outer .top    { transform: rotateX(90deg) translateZ(45px); }
-            .cube-outer .bottom { transform: rotateX(-90deg) translateZ(45px); }
-
-            .cube-inner {
-                width: 45px;
-                height: 45px;
-            }
-            .cube-inner .face-inner {
-                width: 45px;
-                height: 45px;
-            }
-            .cube-inner .front  { transform: translateZ(22.5px); }
-            .cube-inner .back   { transform: rotateY(180deg) translateZ(22.5px); }
-            .cube-inner .right  { transform: rotateY(90deg) translateZ(22.5px); }
-            .cube-inner .left   { transform: rotateY(-90deg) translateZ(22.5px); }
-            .cube-inner .top    { transform: rotateX(90deg) translateZ(22.5px); }
-            .cube-inner .bottom { transform: rotateX(-90deg) translateZ(22.5px); }
-
+        /* Pengaturan Responsif Tambahan untuk Layar Kecil */
+        @media (max-width: 480px) {
             h1 {
-                font-size: 1.7rem;
+                font-size: 1.5rem;
             }
-
             p {
                 font-size: 0.85rem;
+            }
+            .progress-container {
+                width: 95%;
+            }
+            .status-box {
+                font-size: 0.75rem;
+                width: 95%;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Cahaya Latar Belakang -->
-    <div class="bg-light light-1"></div>
-    <div class="bg-light light-2"></div>
+    <!-- Efek Cahaya Belakang -->
+    <div class="glow-orb orb-cyan"></div>
+    <div class="glow-orb orb-pink"></div>
 
     <div class="container">
-        <!-- Area Animasi 3D Double Cube -->
-        <div class="scene-3d">
-            <!-- Kubus Luar Neon Biru -->
-            <div class="cube-outer">
-                <div class="face front"></div>
-                <div class="face back"></div>
-                <div class="face right"></div>
-                <div class="face left"></div>
-                <div class="face top"></div>
-                <div class="face bottom"></div>
-            </div>
-            <!-- Kubus Dalam Neon Pink -->
-            <div class="cube-inner">
-                <div class="face-inner front"></div>
-                <div class="face-inner back"></div>
-                <div class="face-inner right"></div>
-                <div class="face-inner left"></div>
-                <div class="face-inner top"></div>
-                <div class="face-inner bottom"></div>
+        <!-- Struktur Kubus 3D -->
+        <div class="scene">
+            <div class="cube">
+                <div class="face front">⚙️</div>
+                <div class="face back">🔧</div>
+                <div class="face right">⚡</div>
+                <div class="face left">🛡️</div>
+                <div class="face top">💻</div>
+                <div class="face bottom">🚀</div>
             </div>
         </div>
 
-        <!-- Indikator Status Aktif -->
-        <div class="status-badge">
-            <span class="status-dot"></span>
-            Sistem Sedang Diperbarui
-        </div>
+        <!-- Teks Informasi -->
+        <h1>Sistem Sedang Diperbarui</h1>
+        <p>Kami sedang melakukan pemeliharaan rutin dan peningkatan server untuk memberikan pengalaman terbaik kepada Anda. Kami akan segera kembali online.</p>
 
-        <!-- Judul -->
-        <h1>Under Maintenance</h1>
-
-        <!-- Deskripsi -->
-        <p>Kami sedang melakukan pemeliharaan rutin untuk meningkatkan performa, fitur, serta keamanan website kami. Kami akan segera kembali online. Terima kasih atas kesabaran Anda.</p>
-
-        <!-- Progress Bar Simulasi -->
+        <!-- Progress Bar -->
         <div class="progress-container">
             <div class="progress-bar"></div>
         </div>
-        <div class="progress-label">
-            <span>Progress Pemeliharaan</span>
-            <span>65% Selesai</span>
+
+        <!-- Konsol Aktivitas Log -->
+        <div class="status-box">
+            <span class="status-dot"></span>
+            <span id="log-text">Menginisialisasi pembaruan sistem...</span>
         </div>
     </div>
 
+    <script>
+        // Simulasi Log Pembaruan Server
+        const logs = [
+            "Memeriksa integritas database...",
+            "Mengoptimalkan performa server...",
+            "Memasang patch keamanan baru...",
+            "Membersihkan cache sistem...",
+            "Menguji konektivitas API...",
+            "Pembaruan selesai 99%. Menunggu sinkronisasi..."
+        ];
+
+        let logIndex = 0;
+        const logTextElement = document.getElementById("log-text");
+
+        function updateLog() {
+            logTextElement.textContent = logs[logIndex];
+            logIndex = (logIndex + 1) % logs.length;
+        }
+
+        // Mengubah teks setiap 3 detik secara bergantian
+        setInterval(updateLog, 3000);
+    </script>
 </body>
 </html>
